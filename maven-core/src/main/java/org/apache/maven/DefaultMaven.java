@@ -629,7 +629,7 @@ public class DefaultMaven
     {
         ProjectBuildingRequest projectBuildingRequest = request.getProjectBuildingRequest();
 
-        List<ProjectBuildingResult> results = projectBuilder.build( files, request.isRecursive(), projectBuildingRequest );
+        List<ProjectBuildingResult> results = projectBuilder.build( files, request.isRecursive() || !request.getSelectedProjects().isEmpty(), projectBuildingRequest );
 
         boolean problems = false;
 
@@ -739,6 +739,10 @@ public class DefaultMaven
                 if ( selectedProject != null )
                 {
                     selectedProjects.add( selectedProject );
+                    if ( request.isRecursive() )
+                    {
+                        selectedProjects.addAll( selectedProject.getCollectedProjects() );
+                    }
                 }
                 else
                 {
